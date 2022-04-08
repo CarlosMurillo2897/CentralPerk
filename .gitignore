@@ -1,5 +1,6 @@
 # Dependency directories
 node_modules/
+.DS_Store
 
 # Release directories.
 public/
@@ -8,5 +9,5 @@ public/
 .vs/
 
 # Bin and Obj directories.
-\bin
-\obj
+**\bin
+**\obj
