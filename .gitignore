@@ -11,3 +11,6 @@ public/
 # Bin and Obj directories.
 **\bin
 **\obj
+
+# Ignore Tools Manifest.
+.config
