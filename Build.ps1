@@ -1,7 +1,11 @@
-# Declare Variables.
+WRITE-HOST "`n ***** Build Execution STARTED. *****" -ForegroundColor DarkBlue  -BackgroundColor Yellow
+
+# 01. Declare Variables.
+WRITE-HOST "`n01. Defining Variables." -ForegroundColor Green
+
 $PGUser = "postgres"
 $PGPassword = "root"
-$DBName = "CentralPerkDev"
+$DBName = "centralperkdev"
 
 $SolutionPath = $ARGS[0]
 $PGService = "postgresql-x64-13"
@@ -10,53 +14,56 @@ $DataProject = ".\CentralPerk.Data"
 $FrontEndProject = ".\CentralPerk.frontend"
 $MigrationsPath = ".\CentralPerk.Data\Migrations"
 
-# Access Solution Path.
-WRITE-HOST "`nBuild Execution STARTED." -ForegroundColor Yellow
+$CreateScript = ".\DB Scripts\DB - Create.sql"
+$InsertScript = ".\DB Scripts\DB - Insert.sql"
+
+# 02. Access Solution Path.
+WRITE-HOST "`n02. Accessing Solution Path." -ForegroundColor Green
 CD $SolutionPath
 
-# Define Environment Variables ONLY for execution.
-WRITE-HOST "`nDefine Environment Variables." -ForegroundColor Green
+# 03. Define Environment Variables ONLY for execution.
+WRITE-HOST "`n03. Defining Environment Variables." -ForegroundColor Green
 # $env:PATH += ";$SolutionPath\node_modules\.bin\"
 $env:PGPASSWORD=$PGPassword
 
-# Start Services.
-WRITE-HOST "`nRunning 'POSTGRES SQL' Service." -ForegroundColor Green
+# 04. Start Services.
+WRITE-HOST "`n04. Running 'POSTGRES SQL' Service." -ForegroundColor Green
 SET-SERVICE -NAME $PGService -STATUS "Running" -STARTUPTYPE manual
 
-# Create a Tools Manifest, this will define execution tools just locally.
-WRITE-HOST "`nCreating Tools Manifest locally." -ForegroundColor Green
+# 05. Create a Tools Manifest, this will define execution tools just locally.
+WRITE-HOST "`n05. Creating Tools Manifest locally." -ForegroundColor Green
 DOTNET new tool-manifest --force
 
-# Install DotNet Entity Framework will be installed locally.
-WRITE-HOST "`n`nInstalling .NET Entity Framework locally." -ForegroundColor Green
+# 06. Install DotNet Entity Framework will be installed locally.
+WRITE-HOST "`n06. Installing .NET Entity Framework locally." -ForegroundColor Green
 DOTNET tool install dotnet-ef
 
-# PSQL must be a environment variable, UserName 'postgres' and Password 'root' needs to be created by default.
-# WRITE-HOST "`nCreating DB." -ForegroundColor Green
-# PSQL -U $PGUser -f $CreateScript
+# 07. Creating DB with Script. PSQL MUST be running and PGPASSWORD should be a environment variable.
+WRITE-HOST "`n07. Creating DB." -ForegroundColor Green
+PSQL -U $PGUser -f $CreateScript
 
-# Add Migrations.
-WRITE-HOST "`nAdd Migrations." -ForegroundColor Green
+# 08. Add Migrations.
+WRITE-HOST "`n08. Adding Migrations." -ForegroundColor Green
 IF (TEST-PATH $MigrationsPath) {
     Remove-Item -Path $MigrationsPath -Recurse
 }
 
 DOTNET dotnet-ef -p $DataProject -s $WebProject Migrations Add CompleteMigration
 
-# Update DataBase.
-WRITE-HOST "`nUpdate DataBase." -ForegroundColor Green
-# DOTNET dotnet-ef -p $DataProject -s $WebProject Database Update
+# 09. Update DataBase.
+WRITE-HOST "`n09. Updating DataBase." -ForegroundColor Green
+DOTNET dotnet-ef -p $DataProject -s $WebProject Database Update
 
-# Insert SQL Data.
-# WRITE-HOST "`nInsert TEST Data." -ForegroundColor Green
-# PSQL -U $PGUser -d $DBName -f $InsertsScript
+# 10. Insert SQL Data with Script.PSQL MUST be running and PGPASSWORD should be a environment variable.
+WRITE-HOST "`n10. Inserting TEST Data." -ForegroundColor Green
+ PSQL -U $PGUser -d $DBName -f $InsertScript
 
-# Install NPM Packages.
-WRITE-HOST "`nInstalling NPM Packages." -ForegroundColor Green
+# 11. Install NPM Packages.
+WRITE-HOST "`n11. Installing NPM Packages." -ForegroundColor Green
 CD $FrontEndProject
-NPM I
+NPM i
 CD ..
 
 # Close PS Console.
-WRITE-HOST "`nBuild Execution COMPLETED.`n" -ForegroundColor Yellow
+WRITE-HOST "`n***** Build Execution COMPLETED. *****`n" -ForegroundColor DarkBlue  -BackgroundColor Yellow
 EXIT
