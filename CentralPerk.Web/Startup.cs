@@ -29,7 +29,7 @@ namespace CentralPerk.Web
         {
             services.AddControllers();
 
-            services.AddDbContext<SolarDbContext>(opts =>
+            services.AddDbContext<CentralPerkDbContext>(opts =>
             {
                 opts.EnableDetailedErrors();
                 opts.UseNpgsql(Configuration.GetConnectionString("CentralPerk.dev"));
