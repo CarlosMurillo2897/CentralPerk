@@ -65,5 +65,5 @@ NPM i
 CD ..
 
 # Close PS Console.
-WRITE-HOST "`n***** Build Execution COMPLETED. *****`n" -ForegroundColor DarkBlue  -BackgroundColor Yellow
+WRITE-HOST "`n***** Build Execution COMPLETED. *****" -ForegroundColor DarkBlue  -BackgroundColor Yellow
 EXIT
