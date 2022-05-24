@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CentralPerk.Data\CentralPerk.Data.csproj" />
+    <ProjectReference Include="..\CentralPerk.Services\CentralPerk.Services.csproj" />
   </ItemGroup>
 
 

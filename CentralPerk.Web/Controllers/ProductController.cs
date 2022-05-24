@@ -1,16 +1,18 @@
+using CentralPerk.Services.Product;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace CentralPerk.Web.Controllers {
     
     [ApiController]
-    public class ProductController : ControllerBase {
+    public class ProductController : ControllerBase
+    {
         
         private readonly ILogger<ProductController> _logger;
         private readonly IProductService _productService;
 
         public ProductController (
-            ILogger<ProductController> logger
+            ILogger<ProductController> logger,
             IProductService productService
         ) {
             _logger = logger;
@@ -18,7 +20,8 @@ namespace CentralPerk.Web.Controllers {
         }
 
         [HttpGet("/api/product")]
-        public ActionResult GetProduct () {
+        public ActionResult GetProduct ()
+        {
             _logger.LogInformation("Getting all Products.");
             _productService.GetAllProducts();
             return Ok("");
