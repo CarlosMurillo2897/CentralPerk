@@ -1,4 +1,6 @@
+using System.Linq;
 using CentralPerk.Services.Product;
+using CentralPerk.Web.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -23,8 +25,9 @@ namespace CentralPerk.Web.Controllers {
         public ActionResult GetProduct ()
         {
             _logger.LogInformation("Getting all Products.");
-            _productService.GetAllProducts();
-            return Ok("");
+            var products = _productService.GetAllProducts();
+            var productViewModels = products.Select(ProductMapper.SerializeProductModel);
+            return Ok(productViewModels);
         }
     }
 }
