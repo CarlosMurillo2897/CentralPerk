@@ -17,7 +17,7 @@ namespace CentralPerk.Services.Product
         }
 
         /// <summary>
-        /// Retrieves All Products from DB.
+        /// Retrieves All Products.
         /// </summary>
         /// <returns>List of Products.</returns>
         public List<Data.Models.Product> GetAllProducts()
@@ -26,20 +26,20 @@ namespace CentralPerk.Services.Product
         }
 
         /// <summary>
-        /// Retrieves Product by ID from DB.
+        /// Retrieves Product by ID.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Product</returns>
+        /// <param name="id">productId</param>
+        /// <returns>Product.</returns>
         public Data.Models.Product GetProductById(int id)
         {
             return _db.Products.Find(id);
         }
 
         /// <summary>
-        /// Adds a new Product to DB.
+        /// Adds a new Product.
         /// </summary>
         /// <param name="product"></param>
-        /// <returns>Product</returns>
+        /// <returns>Service Response of a Product.</returns>
         public ServiceResponse<Data.Models.Product> CreateProduct(Data.Models.Product product)
         {
             try
@@ -51,15 +51,15 @@ namespace CentralPerk.Services.Product
                     IdealQuantity = 10
                 };
 
-                _db.Products.Add(product);
-                _db.ProductInventories.Add(newInventory);
+                _db.Add(product);
+                _db.Add(newInventory);
                 _db.SaveChanges();
                 
                 return new ServiceResponse<Data.Models.Product>
                 {
                     Data = product,
                     IsSuccess = true,
-                    Message = "Created new Product.",
+                    Message = "Product Created.",
                 };
             }
             catch (Exception e)
@@ -74,10 +74,10 @@ namespace CentralPerk.Services.Product
         }
 
         /// <summary>
-        /// Archive Product from DB by setting boolean isArchived to true.
+        /// Archive Product by setting boolean isArchived to true.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Product</returns>
+        /// <param name="id">productId</param>
+        /// <returns>Service Response of a Product.</returns>
         public ServiceResponse<Data.Models.Product> ArchiveProduct(int id)
         {
             try
@@ -90,7 +90,7 @@ namespace CentralPerk.Services.Product
                 {
                     Data = product,
                     IsSuccess = true,
-                    Message = "Archived Product.",
+                    Message = "Product Archived.",
                 };
             }
             catch (Exception e)

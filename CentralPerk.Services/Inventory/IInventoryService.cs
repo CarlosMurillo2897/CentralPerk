@@ -9,6 +9,5 @@ namespace CentralPerk.Services.Inventory
         public ServiceResponse<ProductInventory> UpdateUnitsAvailable(int id, int adjustment);
         public ProductInventory GetByProductId(int productId);
         public List<ProductInventorySnapshot> GetSnapshotHistory();
-        public void CreateSnapshot();
     }
 }

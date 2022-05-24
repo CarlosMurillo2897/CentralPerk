@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CentralPerk.Data;
+using CentralPerk.Services.Customer;
+using CentralPerk.Services.Inventory;
+using CentralPerk.Services.Order;
 using CentralPerk.Services.Product;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,7 +39,10 @@ namespace CentralPerk.Web
                 opts.UseNpgsql(Configuration.GetConnectionString("CentralPerk.dev"));
             });
 
+            services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<IInventoryService, InventoryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
